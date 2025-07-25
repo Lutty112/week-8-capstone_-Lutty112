@@ -156,8 +156,8 @@ pnpm dev
 
 ## 🔗 Live Links
 
-- 🌐 Frontend (Vercel): [https://dime-allies-frontend.vercel.app](https://dime-allies-frontend.vercel.app)
-- ⚙️ Backend (Render): [https://dime-allies-api.onrender.com](https://dime-allies-api.onrender.com)
+- 🌐 Frontend (Vercel): [https://week-8-capstone-lutty112.vercel.app/]
+- ⚙️ Backend (Render): [https://week-8-capstone-lutty112.onrender.com/] 
 
 ---
 
