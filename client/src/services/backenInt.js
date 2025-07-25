@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { io } from 'socket.io-client';
 
-const rawURL = import.meta.env.VITE_API_URL || "https://week-8-capstone-lutty112.onrender.com/api"
+const rawURL = import.meta.env.VITE_API_URL || "https://week-8-capstone-lutty112.onrender.com"
 const baseURL = rawURL.replace(/\/+$/, '');
 
 // Create axios instance with base configuration
