@@ -12,12 +12,11 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// Allow only frontend on Vercel to connect
+// Allow only frontend on Vercel and localhost for development
 const allowedOrigins = [
- 'https://week-8-capstone-lutty112.vercel.app',
- 'https://week-8-capstone-lutty112.onrender.com/api',
+  'https://week-8-capstone-lutty112.vercel.app',
   'http://localhost:5173',
-  ];
+];
 
 // CORS for Express
 app.use(cors({
@@ -37,6 +36,7 @@ const io = new Server(server, {
 // Socket.IO events
 require('./socket')(io);
 
+
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -52,16 +52,14 @@ app.use('/api/events', require('./routes/eventRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
 // Connect DB and start server
 connectDB();
 
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, '0.0.0.0', () => {
+  server.listen(PORT, '0.0.0.0', () => { // Use server.listen instead of app.listen
     console.log(`✅ Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
-module.exports = app;
-
+module.exports = server; 
