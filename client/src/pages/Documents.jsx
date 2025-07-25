@@ -33,7 +33,7 @@ export default function Documents() {
 
   const fetchDocs = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/documents`, {
+      const res = await axios.get(`https://week-8-capstone-lutty112.onrender.com/api/documents`, {
         headers: {
           Authorization: `Bearer ${token}`, // Use token from useAuth
         },
@@ -59,7 +59,7 @@ export default function Documents() {
     formData.append("title", file.name);
 
     try {
-      await axios.post(`http://localhost:5000/api/documents`, formData, {
+      await axios.post(`https://week-8-capstone-lutty112.onrender.com/api/documents`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`, // Use token from useAuth

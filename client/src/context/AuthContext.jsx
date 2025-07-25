@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const res = await axios.post('https://week-8-capstone-lutty112.onrender.com/api/auth/login', { email, password });
       const { user, token } = res.data;
       console.log('Login response:', { user, token });
       setUser(user);

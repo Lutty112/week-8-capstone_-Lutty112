@@ -5,7 +5,7 @@ import { socket } from "../services/backenInt";
   const ImageUploader = ({ room, sender, onSend }) => {
   const fileRef = useRef();
   const [previewImage, setPreviewImage] = useState(null);
-  const backendUrl = "http://localhost:5000"; // Adjust if needed
+  const backendUrl = "https://week-8-capstone-lutty112.onrender.com/api"; // Adjust if needed
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];

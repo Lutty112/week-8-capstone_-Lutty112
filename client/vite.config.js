@@ -16,7 +16,7 @@ export default defineConfig({
     proxy: {
       '/api': 
       {
-        target: 'http://localhost:5000', // backend URL and port
+        target: 'https://week-8-capstone-lutty112.onrender.com/api', // backend URL and port
         changeOrigin: true,
         secure: false,
       },

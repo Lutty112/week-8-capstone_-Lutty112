@@ -14,6 +14,8 @@ const server = http.createServer(app);
 
 // Allow only frontend on Vercel to connect
 const allowedOrigins = [
+ 'https://week-8-capstone-lutty112.vercel.app/',
+ 'https://week-8-capstone-lutty112.onrender.com/api',
   'http://localhost:5173',
   ];
 

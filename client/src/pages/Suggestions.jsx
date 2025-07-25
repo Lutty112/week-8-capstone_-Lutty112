@@ -36,7 +36,7 @@ export default function Suggestions() {
 
   const fetchSuggestions = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/suggestions", {
+      const res = await axios.get("https://week-8-capstone-lutty112.onrender.com/api/suggestions", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuggestions(res.data);
@@ -67,7 +67,7 @@ export default function Suggestions() {
     }
     try {
       await axios.post(
-        "http://localhost:5000/api/suggestions",
+        "https://week-8-capstone-lutty112.onrender.com/api/suggestions",
         { content: `${title}: ${description}` },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -92,7 +92,7 @@ export default function Suggestions() {
 
   const handleUpvote = async (id) => {
     try {
-      await axios.post(`http://localhost:5000/api/suggestions/${id}/upvote`, {}, {
+      await axios.post(`https://week-8-capstone-lutty112.onrender.com/api/suggestions/${id}/upvote`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchSuggestions();

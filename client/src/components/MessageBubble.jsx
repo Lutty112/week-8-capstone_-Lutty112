@@ -38,7 +38,7 @@ export default function MessageBubble({ message, isOwn, onReact }) {
         </p>
 
         {isImage && (
-          <img src={message.image.startsWith("http") ? message.image : `http://localhost:5000${message.image}`} alt="Shared" className="w-60 rounded-lg my-1"
+          <img src={message.image.startsWith("http") ? message.image : `https://week-8-capstone-lutty112.onrender.com/api${message.image}`} alt="Shared" className="w-60 rounded-lg my-1"
           />
 
         )}

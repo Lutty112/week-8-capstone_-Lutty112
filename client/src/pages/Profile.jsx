@@ -19,7 +19,7 @@ export default function Profile() {
           navigate("/login");
           return;
         }
-        const res = await axios.get("http://localhost:5000/api/users/me", {
+        const res = await axios.get("https://week-8-capstone-lutty112.onrender.com/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data); // Changed from res.data.user to res.data

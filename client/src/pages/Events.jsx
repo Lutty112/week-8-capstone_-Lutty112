@@ -32,7 +32,7 @@ export default function Events() {
   const fetchEvents = async (token) => {
     try {
       console.log("Fetching events with token:", token);
-      const res = await axios.get("http://localhost:5000/api/events", {
+      const res = await axios.get("https://week-8-capstone-lutty112.onrender.com/api/events", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEvents(res.data);
@@ -68,7 +68,7 @@ export default function Events() {
     try {
       const token = user?.token || localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/events",
+        "https://week-8-capstone-lutty112.onrender.com/api/events",
         { title, date, description, location },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -99,7 +99,7 @@ export default function Events() {
     try {
       const token = user?.token || localStorage.getItem("token");
       await axios.post(
-        `http://localhost:5000/api/events/${eventId}/attend`,
+        `https://week-8-capstone-lutty112.onrender.com/api/events/${eventId}/attend`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
