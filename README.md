@@ -1,52 +1,201 @@
-# MERN Stack Capstone Project
 
-This assignment focuses on designing, developing, and deploying a comprehensive full-stack MERN application that showcases all the skills you've learned throughout the course.
+# 💬 Dime Allies Hub
 
-## Assignment Overview
+**Dime Allies Hub** is a real-time collaborative platform for the UTT Dime Allies community. It enables seamless communication, event coordination, financial planning, and idea sharing via chat rooms, suggestions, polls, and document uploads. It includes secure authentication, protected routes, and beautiful Tailwind UI components.
 
-You will:
-1. Plan and design a full-stack MERN application
-2. Develop a robust backend with MongoDB, Express.js, and Node.js
-3. Create an interactive frontend with React.js
-4. Implement testing across the entire application
-5. Deploy the application to production
+---
 
-## Getting Started
+## 📁 Project Structure
 
-1. Accept the GitHub Classroom assignment
-2. Clone the repository to your local machine
-3. Follow the instructions in the `Week8-Assignment.md` file
-4. Plan, develop, and deploy your capstone project
+```
+dime-allies-hub/
+├── client/                  # Frontend (React + Tailwind)
+│   ├── public/
+│   ├── src/
+│   │   ├── components/      # Reusable UI components (Navbar, Chat, etc.)
+│   │   ├── context/         # Auth and Socket context
+│   │   ├── pages/           # Main route pages (ChatRoom, Dashboard, Suggestions, etc.)
+│   │   ├── services/        # Axios APIs and socket services
+│   │   ├── App.jsx          # Main App with routing and ProtectedRoute
+│   │   └── main.jsx         # Entry point
+│   ├── tailwind.config.js
+│   └── index.html
+├── server/                  # Backend (Express + MongoDB)
+│   ├── config/              # DB connection and socket setup
+│   ├── controllers/         # Route logic (auth, messages, suggestions, etc.)
+│   ├── models/              # Mongoose schemas (User, Message, Suggestion, etc.)
+│   ├── routes/              # Express routes
+│   ├── middleware/          # Auth and error middlewares
+│   ├── server.js            # Entry point
+│   └── .env                 # Environment variables
+├── README.md                # Project Documentation
+├── package.json             # Project scripts and metadata
+└── mern-ci-cd.yml           # GitHub Actions CI/CD pipeline
+```
 
-## Files Included
+---
 
-- `Week8-Assignment.md`: Detailed assignment instructions
+## 🔧 Setup Instructions
 
-## Requirements
+1. **Clone the repo:**
+```bash
+git clone https://github.com/yourusername/dime-allies-hub.git
+cd dime-allies-hub
+```
 
-- Node.js (v18 or higher)
-- MongoDB (local installation or Atlas account)
-- npm or yarn
-- Git and GitHub account
-- Accounts on deployment platforms (Render/Vercel/Netlify/etc.)
+2. **Install dependencies:**
+```bash
+cd client && pnpm install
+cd ../server && pnpm install
+```
 
-## Project Ideas
+3. **Set environment variables:**
+Create `.env` file in `/server` with:
+```env
+MONGO_URI=your_mongo_connection_string
+JWT_SECRET=your_secret_key
+CLIENT_URL=http://localhost:5173
+VITE_SOCKET_URL=http://localhost:5000
+SENTRY_DSN=your_sentry_dsn
+```
 
-The `Week8-Assignment.md` file includes several project ideas, but you're encouraged to develop your own idea that demonstrates your skills and interests.
+4. **Run the app locally:**
+```bash
+# Terminal 1
+cd server
+pnpm dev
 
-## Submission
+# Terminal 2
+cd client
+pnpm dev
+```
+## 🖼️ Screenshots
 
-Your project will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+## dashboard 
+![DashboardPage](Screenshots/Dashboard.png)
 
-1. Commit and push your code regularly
-2. Include comprehensive documentation
-3. Deploy your application and add the live URL to your README.md
-4. Create a video demonstration and include the link in your README.md
+## Login/Register Forms
+![LoginForm](Screenshots/LoginForm.png)
 
-## Resources
+## Payment
+![PaymentPage](Screenshots/PaymentPage.png)
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [Express.js Documentation](https://expressjs.com/)
-- [React Documentation](https://react.dev/)
-- [Node.js Documentation](https://nodejs.org/en/docs/)
-- [GitHub Classroom Guide](https://docs.github.com/en/education/manage-coursework-with-github-classroom) 
+## ChatRoom
+![ChatRoom](Screenshots/ChatRoom.png)
+
+---
+
+## 🚀 Deployment
+
+### 🔹 Backend on Render:
+1. Go to [Render](https://render.com/), create new Web Service.
+2. Connect GitHub, select `server/`, set build command `pnpm install` and start command `node server.js`.
+3. Add environment variables from `.env`.
+
+### 🔹 Frontend on Vercel:
+1. Go to [Vercel](https://vercel.com/), import GitHub project.
+2. Set root directory to `client/`.
+3. Add `VITE_SOCKET_URL=https://your-render-backend-url` in environment variables.
+
+---
+
+## 🧪 Testing & Debugging
+
+### ✅ Frontend Testing:
+- Unit & component tests using `Jest` and `React Testing Library`.
+
+### ✅ Backend Testing:
+- API route tests using `Jest` + `Supertest`.
+
+### 🐞 Debugging:
+- Installed and configured [Sentry](https://sentry.io/) for both backend and frontend.
+- Errors are logged in Sentry dashboard for monitoring.
+
+### 🔍 Health Check:
+- Endpoint: `GET /api/health` to verify backend status.
+
+---
+
+## 🛡️ Protected Routes
+
+- Used a `ProtectedRoute` wrapper in `App.jsx`.
+- Only authenticated users can access `/chat`, `/suggestions`, `/polls`, etc.
+
+---
+
+## 📚 API Documentation
+
+### Auth Routes
+| Method | Endpoint        | Description           |
+|--------|------------------|------------------------|
+| POST   | `/api/auth/login` | Login user            |
+| POST   | `/api/auth/register` | Register user     |
+
+### Suggestions
+| Method | Endpoint                      | Description                 |
+|--------|-------------------------------|-----------------------------|
+| GET    | `/api/suggestions`            | Fetch all suggestions       |
+| POST   | `/api/suggestions`            | Submit new suggestion       |
+| POST   | `/api/suggestions/:id/upvote` | Upvote a suggestion         |
+
+> Similar routes exist for `/api/events`, `/api/polls`, `/api/documents`, and `/api/messages`.
+
+---
+
+## 🧠 Features
+
+- 🔒 Authentication (Login/Register)
+- 💬 Chat Rooms (General and Leaders Corner)
+- 📷 Image Uploads and Reactions
+- 💡 Suggestions Board with Upvotes
+- 📊 Polls & Surveys (coming)
+- 📁 Document Sharing
+- 📅 Events Page
+
+---
+
+## 🔗 Live Links
+
+- 🌐 Frontend (Vercel): [https://dime-allies-frontend.vercel.app](https://dime-allies-frontend.vercel.app)
+- ⚙️ Backend (Render): [https://dime-allies-api.onrender.com](https://dime-allies-api.onrender.com)
+
+---
+
+### 📊 Monitoring Tools
+
+- **UptimeRobot**:  
+  - Monitors:
+    - Frontend: `https://week-7-devops-deployment-assignment-lilac.vercel.app/`
+    - Backend Health: `https://week-7-devops-deployment-assignment-stci.onrender.com/api/health`
+  - Sends email alerts if downtime occurs
+- **Sentry**:
+  - Error tracking set up for both frontend and backend
+  - Helps detect and fix runtime issues
+- **Health Check**:  
+  - Backend `/api/health` route responds with status and uptime
+
+### 🛠️ Maintenance Plan
+
+- **Regular Updates**:
+  - Keep dependencies up-to-date using `npm outdated` or `pnpm update`
+- **Security Patches**:
+  - Monitor for critical vulnerabilities using GitHub security alerts
+- **Database Backups**:
+  - Export MongoDB regularly (use MongoDB Atlas or CLI backup tools)
+- **Scheduled Checks**:
+  - Weekly review of Sentry logs and uptime reports
+  - Monthly review of deployment configurations and server usage
+
+---
+
+## 👨‍💻 Author
+
+Made with ❤️ by [Lutfia Mosi]
+
+GitHub Account [Lutty112]
+
+---
+
+## 📃 License
+
+MIT License
