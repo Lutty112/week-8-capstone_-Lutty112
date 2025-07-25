@@ -187,6 +187,11 @@ pnpm dev
   - Monthly review of deployment configurations and server usage
 
 ---
+## Pitch deck for Dime Allies Hub
+
+[Pitch deck](C:\Users\dell\Desktop\Final Project\week-8-capstone_-Lutty112\Dime Allies- Pitch deck.pptx)
+
+---
 
 ## 👨‍💻 Author
 
