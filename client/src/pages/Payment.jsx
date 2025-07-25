@@ -7,80 +7,69 @@ export default function Payment() {
   const [amount, setAmount] = useState('');
   const [method, setMethod] = useState('M-Pesa');
   const [paymentHistory, setPaymentHistory] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const { user, token, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('AuthContext user:', user);
-    console.log('Token from localStorage:', localStorage.getItem('token'));
-
-    // Wait for user state to initialize
-    if (user === null && isLoading) {
-      console.log('User state still loading, waiting...');
-      return;
-    }
-
-    if (!user) {
+    if (!user && !token) {
       console.log('User not authenticated, redirecting to /login');
       navigate('/login');
       return;
     }
 
-    // Mock data (replace with API call when ready)
-    const mockHistory = [
-      { date: '2025-07-15', amount: 10000, method: 'M-Pesa' },
-      { date: '2025-07-05', amount: 15000, method: 'Tigo Pesa' },
-    ];
-    setPaymentHistory(mockHistory);
-
-    // Fetch real payment history
     const fetchPaymentHistory = async () => {
       try {
-        const token = localStorage.getItem('token'); // Retrieve token
-        const res = await axios.get('/api/payments', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://week-8-capstone-lutty112.onrender.com/api';
+        const res = await axios.get(`${apiUrl}/payments/my`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setPaymentHistory(res.data);
+        console.log('Payment history response:', res.data);
+        setPaymentHistory(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error('Failed to fetch payment history:', err.response?.data || err.message);
+        setError(err.response?.data?.message || 'Failed to load payment history');
         if (err.response?.status === 401) {
           logout();
           navigate('/login');
         }
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchPaymentHistory();
 
-    setIsLoading(false); // Mark loading as complete
-  }, [user, token, navigate, logout, isLoading]);
+    fetchPaymentHistory();
+  }, [user, token, navigate, logout]);
 
   const handlePayment = async (e) => {
     e.preventDefault();
     if (!amount || !method) {
-      console.error('Amount and method are required');
+      setError('Amount and method are required');
       return;
     }
 
     const newEntry = {
       date: new Date().toISOString().split('T')[0],
       amount: parseInt(amount),
-      method,
+      paymentMethod: method, // Align with backend
+      status: 'pending',
     };
-    setPaymentHistory([newEntry, ...paymentHistory]);
-    setAmount('');
 
-    // Send payment to API
     try {
-      await axios.post(
-        '/api/payments',
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://week-8-capstone-lutty112.onrender.com/api';
+      const res = await axios.post(
+        `${apiUrl}/payments`,
         { amount: parseInt(amount), method },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setPaymentHistory([newEntry, ...paymentHistory]);
+      console.log('Payment response:', res.data);
+      setPaymentHistory([res.data, ...paymentHistory]);
       setAmount('');
+      setError('');
     } catch (err) {
       console.error('Payment error:', err.response?.data || err.message);
+      setError(err.response?.data?.message || 'Payment failed');
       if (err.response?.status === 401) {
         logout();
         navigate('/login');
@@ -88,8 +77,8 @@ export default function Payment() {
     }
   };
 
-  if (!user && isLoading) {
-    return <div>Loading...</div>; // Show loading state while user is initializing
+  if (isLoading) {
+    return <div className="text-center p-6">Loading...</div>;
   }
 
   if (!user) {
@@ -99,6 +88,7 @@ export default function Payment() {
   return (
     <div className="min-h-screen bg-purple-50 dark:bg-gray-900 text-gray-800 dark:text-white p-6">
       <h1 className="text-3xl font-bold text-purple-800 mb-4">Payments</h1>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
       <main className="flex-1 overflow-y-auto p-6 space-y-10">
         <section className="bg-purple-100 dark:bg-gray-800 p-6 rounded-2xl shadow-inner text-gray-700 dark:text-gray-300">
           <h2 className="text-2xl font-semibold text-purple-700 dark:text-purple-300 mb-4">💰 About Payments & Investment in Dime Allies</h2>
@@ -169,14 +159,20 @@ export default function Payment() {
                 </tr>
               </thead>
               <tbody className="divide-y dark:divide-gray-600">
-                {paymentHistory.map(({ date, amount, method }, i) => (
-                  <tr key={i}>
-                    <td className="p-3">{date}</td>
-                    <td className="p-3">{amount.toLocaleString()} TZS</td>
-                    <td className="p-3">{method}</td>
-                    <td className="p-3 text-green-600 font-semibold">Confirmed</td>
+                {Array.isArray(paymentHistory) && paymentHistory.length > 0 ? (
+                  paymentHistory.map(({ createdAt, amount, paymentMethod, status }, i) => (
+                    <tr key={i}>
+                      <td className="p-3">{createdAt ? new Date(createdAt).toISOString().split('T')[0] : 'N/A'}</td>
+                      <td className="p-3">{amount.toLocaleString()} TZS</td>
+                      <td className="p-3">{paymentMethod}</td>
+                      <td className="p-3 text-green-600 font-semibold">{status || 'Pending'}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="p-3 text-center">No payment history available</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
