@@ -11,8 +11,9 @@ export default function RegisterForm({ onSubmit }) {
     profileImage: null,
   });
 
-  const [error, setError] = useState(null);      
-  const [success, setSuccess] = useState(false); 
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -26,24 +27,33 @@ export default function RegisterForm({ onSubmit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await registerUser(formData);
+      const formDataToSend = new FormData();
+      formDataToSend.append('fullName', formData.fullName);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('phone', formData.phone);
+      if (formData.profileImage) {
+        formDataToSend.append('profileImage', formData.profileImage);
+      }
+
+      const res = await registerUser(formDataToSend);
       console.log("Registered:", res.data);
       setSuccess(true);
       setError(null);
-     // 👇 redirect to payment after 1 second
+      // Redirect to payment after 1 second
       setTimeout(() => {
         navigate("/payment");
       }, 1000);
     } catch (err) {
-      console.error("Registration error:", err);
-      setError("Registration failed. Please try again.");
+      console.error("Registration error:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
       setSuccess(false);
     }
   };
 
   return (
-   <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow max-w-md mx-auto">
-     <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-300">Register to Dime Allies</h2>
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow max-w-md mx-auto">
+      <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-300">Register to Dime Allies</h2>
       
       <input
         type="text"
@@ -96,6 +106,9 @@ export default function RegisterForm({ onSubmit }) {
           className="w-full p-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600"
         />
       </div>
+
+      {error && <p className="text-red-500">{error}</p>}
+      {success && <p className="text-green-500">Registration successful! Redirecting...</p>}
 
       <button
         type="submit"
